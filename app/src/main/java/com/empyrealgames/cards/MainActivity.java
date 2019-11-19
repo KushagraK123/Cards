@@ -38,19 +38,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         /*ask for permission for internet*/
         askPermissions();
-        // A thread which connects to url and fetches all the json data.
-        Thread t = new Thread() {
-            public void run() {
-                String url = "https://git.io/fjaqJ";
-                ReadFile readFile = new ReadFile();
 
-                /*we try tp fetch data only if internet is available
-                 otherwise we show error message
-                 */
-
-                if (isNetworkAvailable()) {
+        /*we try tp fetch data only if internet is available
+        otherwise we show error message*/
+        if(!isNetworkAvailable()){
+            TextView t = findViewById(R.id.textview);
+            t.setText("Failed to connect to internet!");
+            ProgressBar p = findViewById(R.id.progressBar);
+            p.setVisibility(View.GONE);
+        }else{
+            Thread t = new Thread() {
+                public void run() {
+                    String url = "https://git.io/fjaqJ";
+                    ReadFile readFile = new ReadFile();
                     String jsonStr = readFile.readFile(url);
                     String s[] = readJSON(jsonStr);
                     if (s != null) {
@@ -60,15 +63,16 @@ public class MainActivity extends AppCompatActivity {
                         i.putExtra(JSON, s);
                         startActivity(i);
                     }
-                }
-                TextView t = findViewById(R.id.textview);
-                t.setText("Unable to Fetch Data!");
-                ProgressBar progressBar = MainActivity.this.findViewById(R.id.progressBar);
-                progressBar.setVisibility(View.INVISIBLE);
 
-            }
-        };
-        t.start();
+
+                }
+            };
+            t.start();
+
+        }
+
+
+
 
     }
 
