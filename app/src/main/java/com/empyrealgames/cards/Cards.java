@@ -120,7 +120,7 @@ public class Cards extends AppCompatActivity {
 
     }
 
-
+    /*To display cards, Fragments is used, so that they can be displayed wherever we want them to.*/
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
